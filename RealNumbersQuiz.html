@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maths With Prince • Real Numbers Challenge</title>
+<style>
+:root{
+  --bg:#06080d;--panel:#10141c;--panel2:#0b0f16;--line:#29313d;
+  --yellow:#ffc400;--white:#f8fafc;--muted:#98a2b3;--green:#9cff57;--red:#ff667d;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#18202b 0,#06080d 42%);color:var(--white);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.035;background:linear-gradient(90deg,#fff 1px,transparent 1px),linear-gradient(#fff 1px,transparent 1px);background-size:36px 36px}
+.wrap{width:min(900px,100%);margin:auto;padding:14px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:8px 2px 18px;font-weight:950;letter-spacing:1px}
+.logo{font-size:15px}.logo span{color:var(--yellow)}.tag{font-size:9px;color:var(--muted);margin-left:7px;letter-spacing:1.4px}
+.badge{font-size:10px;color:#111;background:var(--yellow);padding:7px 10px;border-radius:99px;font-weight:950}
+.hero{border:1px solid var(--line);border-radius:26px;padding:25px;background:linear-gradient(145deg,#151b23,#0a0d12);box-shadow:0 25px 90px #0008;position:relative;overflow:hidden}
+.hero:after{content:"√  π  ∑";position:absolute;right:-10px;bottom:-25px;color:#fff;opacity:.035;font-size:90px;font-weight:1000;transform:rotate(-8deg)}
+.kicker{font-size:10px;letter-spacing:3px;color:var(--yellow);font-weight:950}
+h1{font-size:clamp(42px,9vw,78px);line-height:.85;letter-spacing:-4px;margin:13px 0 14px}
+.hero p{color:var(--muted);line-height:1.55;max-width:680px}
+.ig{display:inline-block;background:var(--yellow);color:#0a0a0a;text-decoration:none;padding:11px 14px;border-radius:11px;font-weight:950}
+.mini{display:inline-block;border:1px solid #3b4451;color:#b8c0cc;padding:10px 11px;border-radius:11px;font-size:10px;font-weight:850}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+.stat{border:1px solid var(--line);background:#080b10;border-radius:13px;padding:11px}
+.stat b{font-size:21px;display:block}.stat small{color:var(--muted)}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin:15px 2px 7px}
+.progress{height:7px;background:#171c24;border-radius:99px;overflow:hidden}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--yellow),#fff08a);transition:.25s}
+.card{margin-top:12px;border:1px solid var(--line);background:linear-gradient(145deg,#11161f,#0c1017);border-radius:23px;padding:21px;box-shadow:0 18px 70px #0007}
+.qtop{display:flex;justify-content:space-between;align-items:center}
+.qnum{color:var(--yellow);font-weight:1000;letter-spacing:1px}
+.diff{font-size:10px;border:1px solid #3a4451;color:#c4ccd6;padding:5px 8px;border-radius:99px;font-weight:850}
+.question{font-size:clamp(20px,4vw,29px);line-height:1.42;margin:23px 0}
+.options{display:grid;gap:10px}
+.option{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#090d13;color:#f1f5f9;border:1px solid #303946;padding:14px;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;transition:.15s}
+.option:hover{border-color:#727d8b;transform:translateY(-1px)}
+.option.selected{border-color:var(--yellow);background:#1b1708;box-shadow:0 0 0 2px #ffc40012}
+.letter{width:30px;height:30px;border:1px solid #3b4653;border-radius:8px;display:grid;place-items:center;color:#aeb8c5;font-weight:950;flex:none}
+.selected .letter{background:var(--yellow);color:#111;border-color:var(--yellow)}
+.explain{display:none;margin-top:12px;padding:13px;border-radius:13px;background:#0a1110;border:1px solid #294035;color:#b9c8c1;line-height:1.55;font-size:13px}
+.explain.show{display:block}
+.navbuttons{display:flex;justify-content:space-between;gap:8px;margin-top:17px}
+button{font:inherit;font-weight:900;cursor:pointer;border-radius:10px;padding:11px 14px}
+.back,.next{background:#171d25;color:#e9edf2;border:1px solid #303b48}.next{background:var(--yellow);color:#0b0b08;border:0}
+.palette{display:flex;flex-wrap:wrap;gap:6px;margin-top:15px}
+.dot{width:31px;height:31px;border-radius:8px;border:1px solid #303a45;background:#11161d;color:#aab4c0;cursor:pointer;font-weight:850}
+.dot.done{background:#322a08;border-color:#796500;color:#ffe47a}.dot.current{outline:2px solid var(--yellow);outline-offset:1px}
+.result{display:none;margin-top:15px;text-align:center;border:1px solid #4d4520;background:linear-gradient(145deg,#191707,#0b0d0a);border-radius:25px;padding:28px;box-shadow:0 20px 90px #0009}
+.grade{font-size:70px;color:var(--yellow);font-weight:1000}.result h2{font-size:46px;margin:3px}
+.resultgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0}
+.rbox{background:#090c08;border:1px solid #35331f;border-radius:12px;padding:12px}.rbox b{font-size:23px;display:block}
+.share,.challenge,.retry{border:0;margin:4px;background:var(--yellow);color:#0b0b08}
+.challenge{background:#1b1b0c;color:#ffe47a;border:1px solid #5b5120}
+.review{display:none;margin:15px auto;text-align:left;max-width:760px;border:1px solid #353b48;background:#0a0e15;border-radius:16px;padding:16px}
+.mistake{margin:9px 0;padding:12px;border:1px solid #303746;border-radius:11px;background:#080c12}
+.mistake .wrong{color:#ff8b98;margin-top:6px}.mistake .right{color:var(--green);margin-top:4px}
+.lock{position:fixed;z-index:50;inset:0;background:#020307ed;backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:18px}
+.lockbox{width:min(480px,100%);text-align:center;border:1px solid #514718;background:#11120c;border-radius:25px;padding:28px;box-shadow:0 30px 100px #000}
+.lockbox h2{font-size:31px;margin:9px}.lockbox p{color:var(--muted);line-height:1.55}
+.follow{display:block;background:var(--yellow);color:#090909;text-decoration:none;font-weight:950;padding:13px;border-radius:11px;margin:15px 0 8px}
+.unlock{width:100%;background:#17170f;color:#ffe47a;border:1px solid #5b5120}
+@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.resultgrid{grid-template-columns:1fr 1fr}.tag{display:none}}
+</style>
+</head>
+<body>
+
+<div class="lock" id="lock">
+  <div class="lockbox">
+    <div style="font-size:48px">🧠</div>
+    <div class="kicker">MATHS WITH PRINCE • CHAPTER 01</div>
+    <h2>REAL NUMBERS<br>MASTER RUN</h2>
+    <p>One premium 20-question challenge. Easy → Medium → Hard. Follow the page, then start your run.</p>
+    <a class="follow" href="https://www.instagram.com/maths.with.prince.07/" target="_blank">📸 FOLLOW @maths.with.prince.07</a>
+    <button type="button" class="unlock" id="unlock">✓ I'VE FOLLOWED — START QUIZ</button>
+  </div>
+</div>
+
+<div class="wrap" id="app" style="display:none">
+<nav>
+  <div class="logo">MATHS<span>.</span>PRINCE <span class="tag">@maths.with.prince.07</span></div>
+  <div class="badge">20 Q • MASTER RUN</div>
+</nav>
+
+<section class="hero">
+  <div class="kicker">CLASS 10 CBSE • CHAPTER 01</div>
+  <h1>REAL<br>NUMBERS<span style="color:var(--yellow)">.</span></h1>
+  <p>Fresh <b>PYQ-inspired</b> practice based on recurring CBSE question patterns — rewritten as original questions. No question below is claimed as a verbatim PYQ.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+    <a class="ig" href="https://www.instagram.com/maths.with.prince.07/" target="_blank">📸 @maths.with.prince.07</a>
+    <span class="mini">6 EASY • 8 MEDIUM • 6 HARD</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="liveAnswered">0</b><small>ANSWERED</small></div>
+    <div class="stat"><b id="liveBest">0</b><small>BEST SCORE</small></div>
+    <div class="stat"><b id="timer">00:00</b><small>TIME</small></div>
+    <div class="stat"><b id="answeredPct">0%</b><small>PROGRESS</small></div>
+  </div>
+</section>
+
+<div class="meta"><span id="count">Question 1 of 20</span><span id="status">Not answered</span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<section class="card" id="card"></section>
+
+<section class="result" id="result">
+  <div class="kicker">MASTER RUN COMPLETE</div>
+  <div class="grade" id="grade">A+</div>
+  <h2 id="final">0 / 20</h2>
+  <p id="message"></p>
+  <div class="resultgrid">
+    <div class="rbox"><b id="rc">0</b>Correct</div>
+    <div class="rbox"><b id="rw">0</b>Wrong</div>
+    <div class="rbox"><b id="rs">0</b>Unattempted</div>
+    <div class="rbox"><b id="ra">0%</b>Accuracy</div>
+    <div class="rbox"><b id="rt">00:00</b>Time</div>
+    <div class="rbox"><b id="rp">0%</b>Score</div>
+  </div>
+  <div class="review" id="review">
+    <div style="font-weight:950;color:var(--yellow);font-size:17px">❌ Review Your Mistakes</div>
+    <div id="mistakeSummary" style="color:#9aa0b8;font-size:12px;margin:5px 0 10px"></div>
+    <div id="mistakeList"></div>
+  </div>
+  <button type="button" id="reviewBtn" style="background:#171d25;color:#fff;border:1px solid #303b48">❌ REVIEW MISTAKES</button>
+  <button type="button" class="share" id="share">📤 SHARE MY SCORE</button>
+  <button type="button" class="challenge" id="challenge">⚔️ CHALLENGE A FRIEND</button>
+  <button type="button" class="retry" id="retry">↻ PLAY AGAIN</button>
+</section>
+</div>
+
+<script>
+const Q=[
+["Easy","Using prime factorisation, find the HCF of 72 and 120.",["12","18","24","36"],2,"72=2³×3² and 120=2³×3×5. Take common prime factors with the smaller powers: 2³×3=24."],
+["Easy","Which fraction has a terminating decimal expansion?",["13/24","17/40","29/75","11/18"],1,"A rational number terminates only when its reduced denominator has prime factors 2 and/or 5. 40=2³×5."],
+["Easy","Which of the following is irrational?",["√49","√50","0.125","7/11"],1,"√50=5√2, and √2 is irrational. The other three are rational."],
+["Easy","Write 0.375 in lowest form.",["1/4","3/8","5/12","7/20"],1,"0.375=375/1000. Dividing by 125 gives 3/8."],
+["Easy","The prime factorisation of 180 is:",["2²×3²×5","2³×3×5","2²×3×5²","2×3²×5²"],0,"180=18×10=(2×3²)×(2×5)=2²×3²×5."],
+["Easy","For 24 and 36, HCF × LCM equals:",["288","432","648","864"],3,"HCF(24,36)=12 and LCM=72. Therefore HCF×LCM=12×72=864."],
+
+["Medium","Find the LCM of 36 and 48.",["72","96","144","288"],2,"36=2²×3² and 48=2⁴×3. Take the highest powers: 2⁴×3²=144."],
+["Medium","Using Euclid's division algorithm, the HCF of 867 and 255 is:",["17","34","51","102"],2,"867=255×3+102; 255=102×2+51; 102=51×2+0. Hence HCF=51."],
+["Medium","Which fraction has a non-terminating recurring decimal expansion?",["7/40","13/90","21/125","9/32"],1,"90=2×3²×5 contains the prime 3, so 13/90 is non-terminating recurring."],
+["Medium","The HCF of two numbers is 24 and their LCM is 360. If one number is 72, the other is:",["96","120","144","180"],1,"For two positive integers: product = HCF×LCM. Other number=(24×360)/72=120."],
+["Medium","Find the greatest number that divides 135 and 180 leaving remainders 3 and 0 respectively.",["6","9","12","15"],2,"Subtract the remainders: 135−3=132 and 180−0=180. Their HCF is 12."],
+["Medium","Which statement is always true?",["2+√3 is rational","2+√3 is irrational","√9 is irrational","0.333... is irrational"],1,"2 is rational and √3 is irrational; their sum cannot be rational, so 2+√3 is irrational."],
+["Medium","The product of two consecutive positive integers is always:",["Odd","Prime","Even","Irrational"],2,"Among any two consecutive integers, one is even. Therefore their product is always even."],
+["Medium","Which number has a terminating decimal expansion after simplification?",["21/90","17/125","23/150","29/210"],1,"125=5³, so 17/125 has only 5 in the denominator and terminates."],
+
+["Hard","Three bells ring every 24, 36 and 54 minutes. If they ring together at 8:00 a.m., when will they ring together next?",["10:36 a.m.","11:12 a.m.","11:36 a.m.","12:00 noon"],2,"LCM(24,36,54)=216 minutes=3 hours 36 minutes. 8:00 a.m.+3:36=11:36 a.m."],
+["Hard","A positive integer is divisible by 8, 12 and 18 and leaves remainder 5 when divided by 7. What is the smallest such integer?",["144","216","288","432"],3,"LCM(8,12,18)=72. Multiples of 72 are checked modulo 7; 432=72×6 and 432 leaves remainder 5."],
+["Hard","Which expression is definitely irrational?",["√2+√8","√5−√5","√49+1","0.25+3/4"],0,"√8=2√2, so √2+√8=3√2, which is irrational."],
+["Hard","Two numbers have HCF 16 and LCM 240. If one number is 48, the other is:",["64","72","80","96"],2,"Product=16×240=3840. Other number=3840/48=80."],
+["Hard","The number of distinct unordered pairs of positive integers having HCF 12 and LCM 180 is:",["1","2","3","4"],1,"Let numbers be 12x and 12y, with gcd(x,y)=1. Then xy=180/12=15. Coprime factor pairs are (1,15) and (3,5): 2 pairs."],
+["Hard","The smallest positive integer which leaves remainders 5, 8 and 13 when divided by 12, 15 and 20 respectively is:",["53","65","73","113"],0,"53−5=48 is divisible by 12; 53−8=45 by 15; and 53−13=40 by 20. So 53 is the smallest solution."]
+];
+
+let current=0,answers=Array(Q.length).fill(null),start=Date.now(),timer;
+const $=id=>document.getElementById(id),letters=["A","B","C","D"];
+
+function beep(){
+  try{
+    const C=window.AudioContext||window.webkitAudioContext,c=new C,o=c.createOscillator(),g=c.createGain();
+    o.connect(g);g.connect(c.destination);o.frequency.value=700;g.gain.value=.035;o.start();o.stop(c.currentTime+.08);
+  }catch(e){}
+}
+function render(){
+  const q=Q[current],selected=answers[current];
+  $("count").textContent="Question "+(current+1)+" of "+Q.length;
+  $("status").textContent=selected===null?"Not answered":"Answer selected";
+  $("bar").style.width=((current+1)/Q.length*100)+"%";
+  $("answeredPct").textContent=Math.round(answers.filter(x=>x!==null).length/Q.length*100)+"%";
+  $("liveAnswered").textContent=answers.filter(x=>x!==null).length;
+  let opts=q[2].map((o,j)=>'<button type="button" class="option '+(selected===j?'selected':'')+'" data-i="'+j+'"><span class="letter">'+letters[j]+'</span><span>'+o+'</span></button>').join("");
+  $("card").innerHTML=
+    '<div class="qtop"><span class="qnum">Q'+String(current+1).padStart(2,"0")+'</span><span class="diff">'+q[0]+'</span></div>'+
+    '<div class="question">'+q[1]+'</div>'+
+    '<div class="options">'+opts+'</div>'+
+    '<div class="explain '+(selected!==null?'show':'')+'" id="explain">💡 <b>Concept:</b> '+(selected!==null?q[4]:"")+'</div>'+
+    '<div class="navbuttons"><button type="button" class="back" id="back" '+(current===0?'disabled':'')+'>← BACK</button><button type="button" class="next" id="next">'+(current===Q.length-1?'FINISH TEST ✓':'NEXT →')+'</button></div>'+
+    '<div class="palette">'+Q.map((_,j)=>'<button type="button" class="dot '+(answers[j]!==null?'done ':'')+(j===current?'current':'')+'" data-q="'+j+'">'+(j+1)+'</button>').join("")+'</div>';
+  document.querySelectorAll(".option").forEach(b=>b.onclick=()=>{
+    answers[current]=Number(b.dataset.i);beep();render();
+  });
+  $("back").onclick=()=>{if(current>0){current--;render()}};
+  $("next").onclick=()=>{if(current===Q.length-1)finish();else{current++;render()}};
+  document.querySelectorAll(".dot").forEach(b=>b.onclick=()=>{current=Number(b.dataset.q);render()});
+}
+function clock(){
+  let s=Math.floor((Date.now()-start)/1000),m=String(Math.floor(s/60)).padStart(2,"0"),z=String(s%60).padStart(2,"0");
+  $("timer").textContent=m+":"+z;
+}
+function finish(){
+  clearInterval(timer);
+  let correct=answers.reduce((n,a,j)=>n+(a===Q[j][3]?1:0),0);
+  let wrong=answers.filter((x,j)=>x!==null&&x!==Q[j][3]).length;
+  let skip=answers.filter(x=>x===null).length;
+  let pct=Math.round(correct/Q.length*100),grade=pct>=90?"A+":pct>=75?"A":pct>=60?"B":pct>=45?"C":"D";
+  let best=Math.max(Number(localStorage.getItem("real_best")||0),correct);
+  localStorage.setItem("real_best",best);
+  $("card").style.display="none";$("result").style.display="block";$("result").scrollIntoView({behavior:"smooth"});
+  $("grade").textContent=grade;$("final").textContent=correct+" / "+Q.length;
+  $("message").textContent=pct>=90?"🏆 Outstanding! You mastered Real Numbers.":pct>=75?"🔥 Strong score! One more run can make it perfect.":"💪 Good attempt! Review the concepts and play again.";
+  $("rc").textContent=correct;$("rw").textContent=wrong;$("rs").textContent=skip;
+  $("ra").textContent=(answers.filter(x=>x!==null).length?Math.round(correct/answers.filter(x=>x!==null).length*100):0)+"%";
+  $("rt").textContent=$("timer").textContent;$("rp").textContent=pct+"%";$("liveBest").textContent=best;
+  $("reviewBtn").style.display=wrong?"inline-block":"none";beep();
+}
+function showMistakes(){
+  const wrong=[];
+  Q.forEach((q,i)=>{if(answers[i]!==null&&answers[i]!==q[3])wrong.push([i,q,answers[i]])});
+  $("mistakeSummary").textContent=wrong.length?wrong.length+" incorrect question"+(wrong.length===1?"":"s")+" to review.":"Perfect — nothing to review!";
+  $("mistakeList").innerHTML=wrong.length?wrong.map(w=>'<div class="mistake"><b>Q'+(w[0]+1)+'. '+w[1][1]+'</b><div class="wrong">Your answer: '+letters[w[2]]+'. '+w[1][2][w[2]]+'</div><div class="right">Correct answer: '+letters[w[1][3]]+'. '+w[1][2][w[1][3]]+'</div><div style="margin-top:6px;color:#aeb8c5;font-size:12px">💡 '+w[1][4]+'</div></div>').join(""):'';
+  $("review").style.display="block";$("review").scrollIntoView({behavior:"smooth"});
+}
+$("unlock").onclick=()=>{
+  localStorage.setItem("real_unlock","1");$("lock").style.display="none";$("app").style.display="block";
+  $("liveBest").textContent=localStorage.getItem("real_best")||0;render();timer=setInterval(clock,1000);
+};
+if(localStorage.getItem("real_unlock")==="1"){
+  $("lock").style.display="none";$("app").style.display="block";
+  $("liveBest").textContent=localStorage.getItem("real_best")||0;render();timer=setInterval(clock,1000);
+}
+$("reviewBtn").onclick=showMistakes;
+$("retry").onclick=()=>location.reload();
+async function shareText(t,el){
+  if(navigator.share){try{await navigator.share({title:"Real Numbers Master Run",text:t})}catch(e){}}
+  else{try{await navigator.clipboard.writeText(t);el.textContent="✓ COPIED"}catch(e){prompt("Copy:",t)}}
+}
+$("share").onclick=()=>shareText("🏆 I scored "+$("final").textContent+" in the Real Numbers Master Run! Can you beat me? "+location.href,$("share"));
+$("challenge").onclick=()=>shareText("⚔️ CHALLENGE! Beat my Real Numbers score: "+$("final").textContent+" 🧠 "+location.href,$("challenge"));
+</script>
+</body>
+</html>
